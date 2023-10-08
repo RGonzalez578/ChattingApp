@@ -1,3 +1,4 @@
+import 'package:chat_app/counter_page.dart';
 import 'package:chat_app/login_page.dart';
 import 'package:flutter/material.dart';
 import 'chat_page.dart';
@@ -13,6 +14,6 @@ class ChatApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'New Telegram',
         theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'RedHatDisplay'),
-        home: ChatPage());
+        home: Counter(buttonColor: Colors.indigo));
   }
 }
