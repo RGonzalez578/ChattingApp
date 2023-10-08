@@ -18,13 +18,13 @@ class LoginPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Text('Let\' sign you in!',
+          const Text('Let\' sign you in!',
               style: TextStyle(
                   fontSize: 25,
                   color: Colors.black54,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.5)),
-          Text(
+          const Text(
             'Welcome back \n You\'ve been missed',
             style: TextStyle(
                 fontSize: 20,
@@ -38,10 +38,15 @@ class LoginPage extends StatelessWidget {
           Container(
             height: 100,
             width: 100,
-            color: Colors.blue,
-            child: FlutterLogo(),
             padding: EdgeInsets.all(10),
             margin: EdgeInsets.all(50),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.fitWidth,
+                    image: NetworkImage(
+                        'https://static.wikia.nocookie.net/stardewvalley/images/8/8c/Leah-Portrait_192px.png/revision/latest/thumbnail/width/360/height/360?cb=20160306051756')),
+                borderRadius: BorderRadius.circular(24),
+                color: Colors.blue),
           )
         ],
       ),

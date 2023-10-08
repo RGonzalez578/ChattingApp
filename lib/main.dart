@@ -1,5 +1,6 @@
 import 'package:chat_app/login_page.dart';
 import 'package:flutter/material.dart';
+import 'chat_page.dart';
 
 void main() {
   runApp(ChatApp());
@@ -12,6 +13,6 @@ class ChatApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'New Telegram',
         theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'RedHatDisplay'),
-        home: LoginPage());
+        home: ChatPage());
   }
 }
