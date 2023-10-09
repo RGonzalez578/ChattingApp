@@ -12,6 +12,7 @@ class _CounterState extends State<Counter> {
   int counter = 0;
 
   void increment() {
+    // Verifies the mounted variable before perform a setState prevents runtime errors
     if(mounted) {
       setState(() {
         counter++;

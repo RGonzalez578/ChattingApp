@@ -1,3 +1,4 @@
+import 'package:chat_app/login_page.dart';
 import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:chat_app/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,9 @@ class ChatPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              print('pressed');
+              Navigator.pop(context);
             },
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             color: Colors.black54,
           )
         ],
