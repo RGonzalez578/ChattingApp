@@ -1,21 +1,32 @@
-import 'package:chat_app/chat_page.dart';
+import 'package:chat_app/core/brand_colors.dart';
+import 'package:chat_app/core/constants.dart';
+import 'package:chat_app/utils/spaces.dart';
+import 'package:chat_app/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Use 'stl' shortcut to create a class that extends from StateLessWidget
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   final _formKey = GlobalKey<FormState>();
-
   final userNameController = TextEditingController();
-
   final passwordController = TextEditingController();
+  final Uri _footerUrl = Uri.parse('https://pub.dev/');
 
   void loginUser(context) {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      Navigator.pushReplacementNamed(context, '/chat', arguments: userNameController.text);
+      Navigator.pushReplacementNamed(context, '/chat',
+          arguments: userNameController.text);
     } else {
       print('Login failed');
+    }
+  }
+
+  Future<void> _goToURL() async {
+    if (!await launchUrl(_footerUrl)) {
+      throw Exception('Error while launching URL');
     }
   }
 
@@ -44,37 +55,36 @@ class LoginPage extends StatelessWidget {
                     fontWeight: FontWeight.normal,
                     color: Colors.black54),
               ),
-              Image.network(
-                'https://static.wikia.nocookie.net/stardewvalley/images/8/8c/Leah-Portrait_192px.png/revision/latest/thumbnail/width/360/height/360?cb=20160306051756',
-                height: 150,
+              verticalSpacing(standardSpace),
+              SvgPicture.asset(
+                'assets/images/dialog.svg',
+                semanticsLabel: 'dialog icon',
+                colorFilter:
+                    ColorFilter.mode(BrandColors.primaryColor, BlendMode.srcIn),
+                height: 110,
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              verticalSpacing(standardSpace),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    TextFormField(
-                      validator: (value) {
-                        if (value != null &&
-                            value.isNotEmpty &&
-                            value.length < 5) {
-                          return 'Your username has to have more than 5 characters';
-                        } else if (value != null && value.isEmpty) {
-                          return 'Please type a username';
-                        } else {
-                          return null;
-                        }
-                      },
-                      controller: userNameController,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'User name'),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
+                    LoginTextField(
+                        labelText: 'User Name',
+                        controller: userNameController,
+                        validator: (value) {
+                          if (value != null &&
+                              value.isNotEmpty &&
+                              value.length < 5) {
+                            return 'Your username has to have more than 5 characters';
+                          } else if (value != null && value.isEmpty) {
+                            return 'Please type a username';
+                          } else {
+                            return null;
+                          }
+                        }),
+                    verticalSpacing(standardSpace),
+                    LoginTextField(
+                      controller: passwordController,
                       validator: (value) {
                         if (value != null &&
                             value.isNotEmpty &&
@@ -86,17 +96,13 @@ class LoginPage extends StatelessWidget {
                           return null;
                         }
                       },
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Password'),
+                      labelText: 'Password',
+                      isPassword: true,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              verticalSpacing(standardSpace),
               ElevatedButton(
                   onPressed: () {
                     loginUser(context);
@@ -104,14 +110,10 @@ class LoginPage extends StatelessWidget {
                   child: const Text('Login',
                       style: TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w600))),
-              const SizedBox(
-                height: 20,
-              ),
+              verticalSpacing(standardSpace),
               GestureDetector(
-                onTap: () {
-                  print('Tapped');
-                },
-                child: const Column(
+                onTap: _goToURL,
+                child: Column(
                   children: [
                     Text(
                       'Find us on',
@@ -119,7 +121,7 @@ class LoginPage extends StatelessWidget {
                           fontSize: 17, fontWeight: FontWeight.normal),
                     ),
                     Text(
-                      'Lorem ipsum',
+                      _footerUrl.toString(),
                       style: TextStyle(
                           fontSize: 17, fontWeight: FontWeight.normal),
                     ),

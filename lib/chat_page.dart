@@ -3,7 +3,7 @@ import 'package:chat_app/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatelessWidget {
-  ChatPage({super.key});
+  const ChatPage({super.key});
   @override
   Widget build(BuildContext context) {
     final username = ModalRoute.of(context)!.settings.arguments as String;

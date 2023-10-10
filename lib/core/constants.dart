@@ -1,0 +1,1 @@
+const double standardSpace = 20;
