@@ -1,39 +1,40 @@
-import 'package:chat_app/modals/author_entity.dart';
+import 'dart:convert';
 import 'package:chat_app/modals/chat_message_entity.dart';
 import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:chat_app/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   ChatPage({super.key});
-  List<ChatMessageEntity> _messages = [
-    ChatMessageEntity(
-        id: '1',
-        text: 'Hello!',
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        delivered: true,
-        viewed: false,
-        author: AuthorEntity(username: 'Ronald'),
-        receiver: AuthorEntity(username: 'Florencio')),
-    ChatMessageEntity(
-        id: '2',
-        text: 'How you doing?',
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        delivered: true,
-        viewed: false,
-        author: AuthorEntity(username: 'Florencio'),
-        receiver: AuthorEntity(username: 'Ronald')),
-    ChatMessageEntity(
-        id: '3',
-        text: 'Like this...',
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        imageUrl:
-            'https://static.wikia.nocookie.net/stardewvalley/images/8/8c/Leah-Portrait_192px.png/revision/latest/thumbnail/width/360/height/360?cb=20160306051756',
-        delivered: true,
-        viewed: false,
-        author: AuthorEntity(username: 'Ronald'),
-        receiver: AuthorEntity(username: 'Florencio'))
-  ];
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  // Initial state variables
+  List<ChatMessageEntity> _messages = [];
+
+  void _loadMessages() async {
+    final response = await rootBundle.loadString('assets/mockup-messages.json');
+    final List<dynamic> decodedList = jsonDecode(response) as List;
+    final List<ChatMessageEntity> chatMessages = decodedList.map((e) {
+      return ChatMessageEntity.fromJson(e);
+    }).toList();
+
+    // Saves messages loaded from JSON to a new State
+    setState(() {
+      _messages = chatMessages;
+    });
+  }
+
+  @override
+  void initState() {
+    _loadMessages();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final username = ModalRoute.of(context)!.settings.arguments as String;

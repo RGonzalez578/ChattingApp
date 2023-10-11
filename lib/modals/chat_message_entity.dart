@@ -19,4 +19,16 @@ class ChatMessageEntity {
       required this.viewed,
       required this.author,
       required this.receiver});
+
+  factory ChatMessageEntity.fromJson(Map<String, dynamic> json) {
+    return ChatMessageEntity(
+        text: json['text'],
+        id: json['id'],
+        imageUrl: json['imageUrl'],
+        createdAt: json['createdAt'],
+        delivered: json['delivered'],
+        viewed: json['viewed'],
+        author: AuthorEntity.fromJson(json['author']) ,
+        receiver: AuthorEntity.fromJson(json['receiver']));
+  }
 }
