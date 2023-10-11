@@ -1,9 +1,10 @@
+import 'package:chat_app/modals/chat_message_entity.dart';
 import 'package:flutter/material.dart';
 
 class ChatBubble extends StatelessWidget {
+  final ChatMessageEntity entity;
   final Alignment alignment;
-  final String message;
-  const ChatBubble({super.key, required this.alignment, required this.message});
+  const ChatBubble({super.key, required this.alignment, required this.entity});
 
   @override
   Widget build(BuildContext context) {
@@ -11,25 +12,24 @@ class ChatBubble extends StatelessWidget {
       alignment: alignment,
       child: Container(
         padding: const EdgeInsets.all(15),
-        margin: const EdgeInsets.all(50),
+        margin: const EdgeInsets.all(25),
         decoration: const BoxDecoration(
             color: Colors.black38,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15))),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(0))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(message,
+            Text(entity.text,
                 style: const TextStyle(
                     fontSize: 17,
                     color: Colors.white,
                     fontWeight: FontWeight.w400)),
-            Image.network(
-              'https://static.wikia.nocookie.net/stardewvalley/images/8/8c/Leah-Portrait_192px.png/revision/latest/thumbnail/width/360/height/360?cb=20160306051756',
-              height: 70,
-            )
+            if (entity.imageUrl != null)
+              Image.network('${entity.imageUrl}', height: 70)
           ],
         ),
       ),
