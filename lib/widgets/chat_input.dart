@@ -1,12 +1,24 @@
+import 'package:chat_app/modals/author_entity.dart';
+import 'package:chat_app/modals/chat_message_entity.dart';
 import 'package:flutter/material.dart';
 
 class ChatInput extends StatelessWidget {
-  ChatInput({super.key});
+  final Function(ChatMessageEntity) onSubmit;
+  ChatInput({super.key, required this.onSubmit});
 
   final msgInputController = TextEditingController();
 
-  void sendMessage(){
-    print(msgInputController.text);
+  void onSendMessage() {
+    ChatMessageEntity newMessage = ChatMessageEntity(
+        text: msgInputController.text,
+        id: '',
+        author: AuthorEntity(username: 'Ronald'),
+        createdAt: 1697004964,
+        delivered: true,
+        viewed: false,
+        receiver: AuthorEntity(username: 'Florencio'));
+
+    onSubmit(newMessage);
   }
 
   @override
@@ -38,7 +50,7 @@ class ChatInput extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: sendMessage,
+            onPressed: onSendMessage,
             icon: const Icon(Icons.send),
             color: Colors.white,
           )
