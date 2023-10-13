@@ -1,5 +1,5 @@
-import 'package:chat_app/modals/author_entity.dart';
-import 'package:chat_app/modals/chat_message_entity.dart';
+import 'package:chat_app/models/author_entity.dart';
+import 'package:chat_app/models/chat_message_entity.dart';
 import 'package:flutter/material.dart';
 
 class ChatInput extends StatelessWidget {
