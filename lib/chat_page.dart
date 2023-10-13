@@ -1,14 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:chat_app/core/constants.dart';
-import 'package:chat_app/models/apiImage_entity.dart';
 import 'package:chat_app/models/chat_message_entity.dart';
-import 'package:chat_app/models/response_api_image_entity.dart';
 import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:chat_app/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
+import 'package:chat_app/repository/image_repository.dart';
 
 class ChatPage extends StatefulWidget {
   ChatPage({super.key});
@@ -32,23 +28,6 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       _messages = chatMessages;
     });
-  }
-
-  Future<List<ApiImage>> _getImages() async {
-    // Make request to API
-    final response = await http.get(Uri.parse(imagesApiUrl),
-        headers: {HttpHeaders.authorizationHeader: imagesApiKey});
-
-    // Check if something went wrong
-    if (response.statusCode == HttpStatus.ok) {
-      final ResponseImageApi decodedList =
-          ResponseImageApi.fromJson(jsonDecode(response.body));
-      final List<ApiImage> images =decodedList.photos;
-      return images;
-    } else {
-      return throw Exception(
-          'Error while retrieving api data. StatusCode: ${response.statusCode}');
-    }
   }
 
   void onMessageSent(ChatMessageEntity message) {
@@ -87,12 +66,6 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
-          FutureBuilder<List<ApiImage>>(
-              future: _getImages(),
-              builder: (BuildContext context, AsyncSnapshot<List<ApiImage>> snap) {
-                if (snap.hasData) return Image.network(snap.data![0].sizes.small);
-                return const CircularProgressIndicator();
-              }),
           Expanded(
             child: ListView.builder(
                 itemCount: _messages.length,
