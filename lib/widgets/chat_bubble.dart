@@ -27,17 +27,19 @@ class ChatBubble extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(entity.text,
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    fontSize: 17,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400)),
+            if (entity.text.isNotEmpty)
+              Text(entity.text,
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                      fontSize: 17,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400)),
             if (entity.imageUrl != null && entity.imageUrl!.isNotEmpty)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.network('${entity.imageUrl}', height: 70),
+                  Image.network('${entity.imageUrl}',
+                      width: MediaQuery.of(context).size.width * 0.3),
                 ],
               )
           ],

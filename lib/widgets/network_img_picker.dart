@@ -1,10 +1,12 @@
+import 'package:chat_app/core/constants.dart';
 import 'package:chat_app/repository/image_repository.dart';
 import 'package:flutter/material.dart';
 import '../models/apiImage_entity.dart';
 
 class NetworkImagePicker extends StatelessWidget {
+  final Function(String) onImageSelected;
   final ImageRepository _imageRepository = ImageRepository();
-  NetworkImagePicker({super.key});
+  NetworkImagePicker({super.key, required this.onImageSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -12,16 +14,30 @@ class NetworkImagePicker extends StatelessWidget {
         future: _imageRepository.getNetworkImages(),
         builder: (BuildContext context, AsyncSnapshot<List<ApiImage>> snap) {
           if (snap.hasData) {
-            return GridView.builder(
-                itemCount: snap.data!.length,
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    crossAxisSpacing: 2,
-                    mainAxisSpacing: 2,
-                    maxCrossAxisExtent:
-                        MediaQuery.of(context).size.width * 0.5),
-                itemBuilder: (context, i) {
-                  return Image.network(snap.data![i].sizes.small);
-                });
+            return Container(
+              margin: const EdgeInsets.only(
+                  left: standardSpace,
+                  top: standardSpace,
+                  right: standardSpace,
+                  bottom: 0),
+              child: GridView.builder(
+                  itemCount: snap.data!.length,
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
+                      maxCrossAxisExtent:
+                          MediaQuery.of(context).size.width * 0.5),
+                  itemBuilder: (context, i) {
+                    return InkWell(
+                        // Needs to be a anonymous function in order to prevent errors
+                        // while performing asynchronous operations
+                        onTap: () {
+                          onImageSelected(snap.data![i].sizes.small);
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.network(snap.data![i].sizes.medium));
+                  }),
+            );
           }
           return const Padding(
               padding: EdgeInsets.all(8),
