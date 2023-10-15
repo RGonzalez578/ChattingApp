@@ -45,6 +45,8 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^2.3.3
   json_serializable: ^6.6.0
+  file_picker: ^6.0.0
+  permission_handler: ^11.0.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

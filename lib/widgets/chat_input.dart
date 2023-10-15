@@ -70,17 +70,20 @@ class _ChatInputState extends State<ChatInput> {
                     padding: const EdgeInsets.all(10.0),
                     child: Image.network(_imageUrl),
                   ),
-                TextField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 5,
-                  minLines: 1,
-                  textCapitalization: TextCapitalization.sentences,
-                  controller: msgInputController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                      hintStyle: TextStyle(color: Colors.white38),
-                      hintText: 'Message',
-                      border: InputBorder.none),
+                Semantics(
+                  label: 'Message input',
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 5,
+                    minLines: 1,
+                    textCapitalization: TextCapitalization.sentences,
+                    controller: msgInputController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        hintStyle: TextStyle(color: Colors.white38),
+                        hintText: 'Message',
+                        border: InputBorder.none),
+                  ),
                 ),
               ],
             ),

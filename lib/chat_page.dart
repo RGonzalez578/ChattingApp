@@ -30,9 +30,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void onMessageSent(ChatMessageEntity message) {
-    setState(() {
-      _messages.add(message);
-    });
+    if (message.text.isNotEmpty || message.imageUrl!.isNotEmpty) {
+      setState(() {
+        _messages.add(message);
+      });
+    }
   }
 
   @override

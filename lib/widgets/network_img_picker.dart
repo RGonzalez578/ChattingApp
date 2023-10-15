@@ -16,9 +16,9 @@ class NetworkImagePicker extends StatelessWidget {
           if (snap.hasData) {
             return Container(
               margin: const EdgeInsets.only(
-                  left: standardSpace,
+                  left: 0,
                   top: standardSpace,
-                  right: standardSpace,
+                  right: 0,
                   bottom: 0),
               child: GridView.builder(
                   itemCount: snap.data!.length,
@@ -35,7 +35,8 @@ class NetworkImagePicker extends StatelessWidget {
                           onImageSelected(snap.data![i].sizes.small);
                           Navigator.of(context).pop();
                         },
-                        child: Image.network(snap.data![i].sizes.medium));
+                        child: Image.network(snap.data![i].sizes.medium,
+                            fit: BoxFit.cover));
                   }),
             );
           }
