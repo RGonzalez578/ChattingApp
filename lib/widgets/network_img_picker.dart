@@ -10,39 +10,48 @@ class NetworkImagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ApiImage>>(
-        future: _imageRepository.getNetworkImages(),
-        builder: (BuildContext context, AsyncSnapshot<List<ApiImage>> snap) {
-          if (snap.hasData) {
-            return Container(
-              margin: const EdgeInsets.only(
-                  left: 0,
-                  top: standardSpace,
-                  right: 0,
-                  bottom: 0),
-              child: GridView.builder(
-                  itemCount: snap.data!.length,
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      crossAxisSpacing: 2,
-                      mainAxisSpacing: 2,
-                      maxCrossAxisExtent:
-                          MediaQuery.of(context).size.width * 0.5),
-                  itemBuilder: (context, i) {
-                    return InkWell(
-                        // Needs to be a anonymous function in order to prevent errors
-                        // while performing asynchronous operations
-                        onTap: () {
-                          onImageSelected(snap.data![i].sizes.small);
-                          Navigator.of(context).pop();
-                        },
-                        child: Image.network(snap.data![i].sizes.medium,
-                            fit: BoxFit.cover));
-                  }),
-            );
-          }
-          return const Padding(
-              padding: EdgeInsets.all(8),
-              child: Center(child: CircularProgressIndicator()));
-        });
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(standardSpace),
+          color: Colors.white),
+      child: FutureBuilder<List<ApiImage>>(
+          future: _imageRepository.getNetworkImages(),
+          builder: (BuildContext context, AsyncSnapshot<List<ApiImage>> snap) {
+            if (snap.hasData) {
+              return Container(
+                margin: const EdgeInsets.only(
+                    left: 0, top: standardSpace * 2, right: 0, bottom: 0),
+                child: GridView.builder(
+                    itemCount: snap.data!.length,
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 2,
+                        maxCrossAxisExtent:
+                            MediaQuery.of(context).size.width * 0.5),
+                    itemBuilder: (context, i) {
+                      return InkWell(
+                          // Needs to be a anonymous function in order to prevent errors
+                          // while performing asynchronous operations
+                          onTap: () {
+                            onImageSelected(snap.data![i].sizes.small);
+                            Navigator.of(context).pop();
+                          },
+                          child: Image.network(snap.data![i].sizes.original,
+                              fit: BoxFit.cover));
+                    }),
+              );
+            } else if (snap.hasError) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(standardSpace),
+                  child: Text('${snap.error}'),
+                ),
+              );
+            }
+            return const Padding(
+                padding: EdgeInsets.all(8),
+                child: Center(child: CircularProgressIndicator()));
+          }),
+    );
   }
 }
