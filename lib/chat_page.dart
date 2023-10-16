@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:chat_app/modals/chat_message_entity.dart';
+import 'package:chat_app/models/chat_message_entity.dart';
 import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:chat_app/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +30,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void onMessageSent(ChatMessageEntity message) {
-    setState(() {
-      _messages.add(message);
-    });
+    if (message.text.isNotEmpty || message.imageUrl!.isNotEmpty) {
+      setState(() {
+        _messages.add(message);
+      });
+    }
   }
 
   @override
@@ -45,6 +47,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final username = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -74,6 +77,7 @@ class _ChatPageState extends State<ChatPage> {
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     entity: _messages[i],
+                    username: username,
                   );
                 }),
           ),

@@ -13,9 +13,11 @@ class ChatApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'New Telegram',
       theme: ThemeData(
+          canvasColor: Colors.transparent,
+          primaryColor: Colors.indigo,
           primarySwatch: Colors.indigo,
           fontFamily: 'RedHatDisplay',
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
               backgroundColor: Colors.indigo, foregroundColor: Colors.black38)),
       home: LoginPage(),
       routes: {'/chat': (context) => ChatPage()},
