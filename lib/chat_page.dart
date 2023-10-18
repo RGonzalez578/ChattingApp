@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:chat_app/models/chat_message_entity.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:chat_app/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
   ChatPage({super.key});
@@ -45,7 +47,9 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    final username = ModalRoute.of(context)!.settings.arguments as String;
+    // context.watch() can keep listening changes for AuthService.getUsername()
+    final username = context.watch<AuthService>().getUsername();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -53,12 +57,21 @@ class _ChatPageState extends State<ChatPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          username,
+          // TODO: Verify what to do if username has 'DefaultValue' String
+          username!,
           style: const TextStyle(color: Colors.black54),
         ),
         actions: [
           IconButton(
             onPressed: () {
+              context.read<AuthService>().updateUsername('gg');
+            },
+            icon: const Icon(Icons.edit),
+            color: Colors.black54,
+          ),
+          IconButton(
+            onPressed: () async {
+              await context.read<AuthService>().logout();
               Navigator.pushReplacementNamed(context, '/');
             },
             icon: const Icon(Icons.logout),
@@ -73,11 +86,11 @@ class _ChatPageState extends State<ChatPage> {
                 itemCount: _messages.length,
                 itemBuilder: (context, i) {
                   return ChatBubble(
-                    alignment: _messages[i].author.username == username
+                    alignment: _messages[i].author.username ==
+                            context.read<AuthService>().getUsername()
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     entity: _messages[i],
-                    username: username,
                   );
                 }),
           ),

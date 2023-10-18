@@ -1,21 +1,23 @@
 import 'package:chat_app/core/constants.dart';
 import 'package:chat_app/models/chat_message_entity.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/utils/spaces.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatBubble extends StatelessWidget {
   final ChatMessageEntity entity;
   final Alignment alignment;
-  final String username;
-  const ChatBubble(
-      {super.key,
-      required this.alignment,
-      required this.entity,
-      required this.username});
+  const ChatBubble({
+    super.key,
+    required this.alignment,
+    required this.entity,
+  });
 
   @override
   Widget build(BuildContext context) {
-    bool isAuthor = entity.author.username == username;
+    bool isAuthor =
+        entity.author.username == context.read<AuthService>().getUsername();
 
     return Align(
       alignment: alignment,
@@ -62,11 +64,12 @@ class ChatBubble extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15)),
                   ),
                 verticalSpacing(standardSpace),
-                // Text(
-                //     DateTime.fromMillisecondsSinceEpoch(entity.createdAt)
-                //         .day
-                //         .toString(),
-                //     style: const TextStyle(color: Colors.white), textAlign: TextAlign.end,)
+                Text(
+                  DateTime.fromMillisecondsSinceEpoch(entity.createdAt)
+                      .toIso8601String(),
+                  style: const TextStyle(color: Colors.white),
+                  textAlign: TextAlign.end,
+                )
               ],
             ),
           ),

@@ -1,22 +1,33 @@
 import 'package:chat_app/core/brand_colors.dart';
 import 'package:chat_app/core/constants.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/utils/spaces.dart';
 import 'package:chat_app/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 
 // Use 'stl' shortcut to create a class that extends from StateLessWidget
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+
   final userNameController = TextEditingController();
+
   final passwordController = TextEditingController();
+
   final Uri _footerUrl = Uri.parse('https://pub.dev/');
 
-  void loginUser(context) {
+  Future<void> loginUser(BuildContext context) async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      await context.read<AuthService>().login(userNameController.text);
       Navigator.pushReplacementNamed(context, '/chat',
           arguments: userNameController.text);
     } else {
@@ -106,8 +117,8 @@ class LoginPage extends StatelessWidget {
               ),
               verticalSpacing(standardSpace),
               ElevatedButton(
-                  onPressed: () {
-                    loginUser(context);
+                  onPressed: () async {
+                    await loginUser(context);
                   },
                   child: const Text('Login',
                       style: TextStyle(
