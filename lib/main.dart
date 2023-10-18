@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'chat_page.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  // Ensures that native code from flutter can interact to our app before
+  // 1 frame will be rendered
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize the authentication service before 1 frame will be rendered
+  await AuthService.initService();
   runApp(Provider(
     create: (BuildContext context) => AuthService(),
     child: ChatApp(),

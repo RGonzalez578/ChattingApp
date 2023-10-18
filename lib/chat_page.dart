@@ -60,7 +60,8 @@ class _ChatPageState extends State<ChatPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              await context.read<AuthService>().logout();
               Navigator.pushReplacementNamed(context, '/');
             },
             icon: const Icon(Icons.logout),

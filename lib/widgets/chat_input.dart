@@ -1,7 +1,9 @@
 import 'package:chat_app/models/author_entity.dart';
 import 'package:chat_app/models/chat_message_entity.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/widgets/network_img_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatInput extends StatefulWidget {
   final Function(ChatMessageEntity) onSubmit;
@@ -19,11 +21,12 @@ class _ChatInputState extends State<ChatInput> {
 
   final msgInputController = TextEditingController();
 
-  void onSendMessage() {
+  void onSendMessage() async {
+    String? usernameFromCache = await context.read<AuthService>().getUsername();
     ChatMessageEntity newMessage = ChatMessageEntity(
         text: msgInputController.text,
         id: '',
-        author: AuthorEntity(username: 'Ronald'),
+        author: AuthorEntity(username: usernameFromCache!),
         createdAt: DateTime.now().millisecondsSinceEpoch,
         delivered: true,
         viewed: false,
