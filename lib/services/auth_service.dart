@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthService {
+class AuthService extends ChangeNotifier {
   static initService() async {
     _prefs = await SharedPreferences.getInstance();
   }
@@ -15,6 +16,12 @@ class AuthService {
     }
   }
 
+  Future<bool> isLoggedIn() async {
+    String? username = await _prefs.getString('username');
+    if (username != null) return true;
+    return false;
+  }
+
   logout() {
     try {
       _prefs.clear();
@@ -27,7 +34,8 @@ class AuthService {
     return _prefs.getString('username') ?? 'DefaultValue';
   }
 
-  void updateUsername(String newUsername){
-    // TODO: Update username un chatpage with a button.
+  void updateUsername(String newUsername) {
+    _prefs.setString('username', newUsername);
+    notifyListeners();
   }
 }

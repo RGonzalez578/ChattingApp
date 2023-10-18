@@ -8,9 +8,12 @@ void main() async {
   // Ensures that native code from flutter can interact to our app before
   // 1 frame will be rendered
   WidgetsFlutterBinding.ensureInitialized();
+
   // Initialize the authentication service before 1 frame will be rendered
   await AuthService.initService();
-  runApp(Provider(
+
+  // To use State notifiers we have to run app with ChangeNotifierProvider
+  runApp(ChangeNotifierProvider(
     create: (BuildContext context) => AuthService(),
     child: ChatApp(),
   ));
@@ -30,7 +33,19 @@ class ChatApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
             backgroundColor: Colors.indigo, foregroundColor: Colors.black38),
       ),
-      home: LoginPage(),
+      home: FutureBuilder<bool>(
+        future: context.read<AuthService>().isLoggedIn(),
+        builder: (context, AsyncSnapshot<bool> snap) {
+          if (snap.connectionState == ConnectionState.done) {
+            if (snap.hasData && snap.data!) {
+              return ChatPage();
+            } else {
+              return LoginPage();
+            }
+          }
+          return const CircularProgressIndicator();
+        },
+      ),
       routes: {'/chat': (context) => ChatPage()},
     );
   }

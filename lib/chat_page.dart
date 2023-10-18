@@ -47,7 +47,9 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    final username = ModalRoute.of(context)!.settings.arguments as String;
+    // context.watch() can keep listening changes for AuthService.getUsername()
+    final username = context.watch<AuthService>().getUsername();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -55,10 +57,18 @@ class _ChatPageState extends State<ChatPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          username,
+          // TODO: Verify what to do if username has 'DefaultValue' String
+          username!,
           style: const TextStyle(color: Colors.black54),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              context.read<AuthService>().updateUsername('gg');
+            },
+            icon: const Icon(Icons.edit),
+            color: Colors.black54,
+          ),
           IconButton(
             onPressed: () async {
               await context.read<AuthService>().logout();
