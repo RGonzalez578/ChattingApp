@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 
 class ChatInput extends StatefulWidget {
   final Function(ChatMessageEntity) onSubmit;
-  ChatInput({super.key, required this.onSubmit});
+  ChatInput({
+    super.key,
+    required this.onSubmit,
+  });
 
   @override
   State<ChatInput> createState() => _ChatInputState();
@@ -21,7 +24,7 @@ class _ChatInputState extends State<ChatInput> {
         text: msgInputController.text,
         id: '',
         author: AuthorEntity(username: 'Ronald'),
-        createdAt: 1697004964,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         delivered: true,
         viewed: false,
         receiver: AuthorEntity(username: 'Florencio'),

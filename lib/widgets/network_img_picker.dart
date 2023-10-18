@@ -33,10 +33,10 @@ class NetworkImagePicker extends StatelessWidget {
                           // Needs to be a anonymous function in order to prevent errors
                           // while performing asynchronous operations
                           onTap: () {
-                            onImageSelected(snap.data![i].sizes.small);
+                            onImageSelected(snap.data![i].sizes.large);
                             Navigator.of(context).pop();
                           },
-                          child: Image.network(snap.data![i].sizes.original,
+                          child: Image.network(snap.data![i].sizes.medium,
                               fit: BoxFit.cover));
                     }),
               );
