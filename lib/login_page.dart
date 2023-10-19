@@ -41,6 +41,105 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Widget _buildHeader(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Let\' sign you in!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 25,
+                color: Colors.black54,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.5)),
+        const Text(
+          'Welcome back \n You\'ve been missed',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.normal,
+              color: Colors.black54),
+        ),
+        verticalSpacing(standardSpace),
+        SvgPicture.asset(
+          'assets/images/dialog.svg',
+          semanticsLabel: 'dialog icon',
+          colorFilter:
+              ColorFilter.mode(BrandColors.primaryColor, BlendMode.srcIn),
+          height: 110,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooter() {
+    return GestureDetector(
+      onTap: _goToURL,
+      child: Column(
+        children: [
+          const Text(
+            'Find us on',
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+          ),
+          Text(
+            _footerUrl.toString(),
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              LoginTextField(
+                  labelText: 'User Name',
+                  controller: userNameController,
+                  validator: (value) {
+                    if (value != null && value.isNotEmpty && value.length < 5) {
+                      return 'Your username has to have more than 5 characters';
+                    } else if (value != null && value.isEmpty) {
+                      return 'Please type a username';
+                    } else {
+                      return null;
+                    }
+                  }),
+              verticalSpacing(standardSpace),
+              LoginTextField(
+                controller: passwordController,
+                validator: (value) {
+                  if (value != null && value.isNotEmpty && value.length < 5) {
+                    return 'Your password has to have more than 5 characters';
+                  } else if (value != null && value.isEmpty) {
+                    return 'Please type a username';
+                  } else {
+                    return null;
+                  }
+                },
+                labelText: 'Password',
+                isPassword: true,
+              ),
+            ],
+          ),
+        ),
+        verticalSpacing(standardSpace),
+        ElevatedButton(
+            onPressed: () async {
+              await loginUser(context);
+            },
+            child: const Text('Login',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600))),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,100 +148,38 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text('Let\' sign you in!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.black54,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5)),
-              const Text(
-                'Welcome back \n You\'ve been missed',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black54),
-              ),
-              verticalSpacing(standardSpace),
-              SvgPicture.asset(
-                'assets/images/dialog.svg',
-                semanticsLabel: 'dialog icon',
-                colorFilter:
-                    ColorFilter.mode(BrandColors.primaryColor, BlendMode.srcIn),
-                height: 110,
-              ),
-              verticalSpacing(standardSpace),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    LoginTextField(
-                        labelText: 'User Name',
-                        controller: userNameController,
-                        validator: (value) {
-                          if (value != null &&
-                              value.isNotEmpty &&
-                              value.length < 5) {
-                            return 'Your username has to have more than 5 characters';
-                          } else if (value != null && value.isEmpty) {
-                            return 'Please type a username';
-                          } else {
-                            return null;
-                          }
-                        }),
-                    verticalSpacing(standardSpace),
-                    LoginTextField(
-                      controller: passwordController,
-                      validator: (value) {
-                        if (value != null &&
-                            value.isNotEmpty &&
-                            value.length < 5) {
-                          return 'Your password has to have more than 5 characters';
-                        } else if (value != null && value.isEmpty) {
-                          return 'Please type a username';
-                        } else {
-                          return null;
-                        }
-                      },
-                      labelText: 'Password',
-                      isPassword: true,
+          child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
+            if (constraints.maxWidth > 1000) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildHeader(context),
+                        _buildFooter(),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              verticalSpacing(standardSpace),
-              ElevatedButton(
-                  onPressed: () async {
-                    await loginUser(context);
-                  },
-                  child: const Text('Login',
-                      style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w600))),
-              verticalSpacing(standardSpace),
-              GestureDetector(
-                onTap: _goToURL,
-                child: Column(
-                  children: [
-                    Text(
-                      'Find us on',
-                      style: TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.normal),
-                    ),
-                    Text(
-                      _footerUrl.toString(),
-                      style: TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.normal),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+                  ),
+                  Expanded(
+                    child: _buildForm(context),
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildHeader(context),
+                  verticalSpacing(standardSpace),
+                  _buildForm(context),
+                  verticalSpacing(standardSpace),
+                  _buildFooter(),
+                ],
+              );
+            }
+          }),
         ),
       ),
     );
