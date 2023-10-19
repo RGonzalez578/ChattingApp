@@ -1,0 +1,72 @@
+[
+    {
+        "id": "1",
+        "imageUrl": "",
+        "createdAt": 1697483075385,
+        "delivered": true,
+        "viewed": true,
+        "text": "Hi!",
+        "author": {
+            "username": "Ronald"
+        },
+        "receiver": {
+            "username": "Florencio"
+        }
+    },
+    {
+        "id": "2",
+        "imageUrl": null,
+        "createdAt": 1697483075385,
+        "delivered": true,
+        "viewed": true,
+        "text": "how you doing?",
+        "author": {
+            "username": "Ronald"
+        },
+        "receiver": {
+            "username": "Florencio"
+        }
+    },
+    {
+        "id": "3",
+        "imageUrl": null,
+        "createdAt": 1697483075385,
+        "delivered": true,
+        "viewed": true,
+        "text": "Hi \nFine & y?",
+        "author": {
+            "username": "Florencio"
+        },
+        "receiver": {
+            "username": "Ronald"
+        }
+    },
+    {
+        "id": "4",
+        "imageUrl": "https://static.wikia.nocookie.net/stardewvalley/images/8/8c/Leah-Portrait_192px.png/revision/latest/thumbnail/width/360/height/360?cb=20160306051756",
+        "createdAt": 1697483075385,
+        "delivered": true,
+        "viewed": true,
+        "text": "Im doing well Sed magna ipsum amet magna facer voluptua facilisi clita eros rebum et vero elit feugait congue. Sed labore amet ipsum ea. Magna est euismod dolores sanctus. Amet sit voluptua amet eirmod clita dolor tincidunt accumsan rebum in invidunt sit. No sed et doming consetetur ipsum erat rebum rebum. Ut ut diam dolor dolores nonumy magna velit aliquip. Elitr magna lorem voluptua ut odio aliquyam vero voluptua dolor at stet ipsum odio invidunt dolor.",
+        "author": {
+            "username": "Ronald"
+        },
+        "receiver": {
+            "username": "Florencio"
+        }
+    },
+    {
+        "id": "5",
+        "imageUrl": null,
+        "createdAt": 1697483075385,
+        "delivered": true,
+        "viewed": true,
+        "text": ":)",
+        "author": {
+            "username": "Florencio"
+        },
+        "receiver": {
+            "username": "Ronald"
+        }
+    }
+]
