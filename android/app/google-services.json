@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "965405508037",
+    "project_id": "talk2me-59dc4",
+    "storage_bucket": "talk2me-59dc4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965405508037:android:ff908def40aea4b1b40bac",
+        "android_client_info": {
+          "package_name": "com.example.chat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnICWbnRUIDxkvo4rc5xFFR1Asx2iHP-k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

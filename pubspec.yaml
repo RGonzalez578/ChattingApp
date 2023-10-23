@@ -17,6 +17,7 @@ dependencies:
   url_launcher: ^6.1.14
   http: any
   json_annotation: ^4.8.0
+  firebase_core: ^2.19.0
 
 dev_dependencies:
   flutter_test:
