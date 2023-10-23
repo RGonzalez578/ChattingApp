@@ -3,11 +3,15 @@ import 'package:chat_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'chat_page.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() async {
+Future<void> main() async {
   // Ensures that native code from flutter can interact to our app before
   // 1 frame will be rendered
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase service
+  await Firebase.initializeApp();
 
   // Initialize the authentication service before 1 frame will be rendered
   await AuthService.initService();
@@ -46,7 +50,9 @@ class ChatApp extends StatelessWidget {
           return const CircularProgressIndicator();
         },
       ),
-      routes: {'/chat': (context) => ChatPage()},
+      routes: {
+        '/chat': (context) => ChatPage(),
+      },
     );
   }
 }
