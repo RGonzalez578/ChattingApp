@@ -3,6 +3,8 @@ import 'package:chat_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'chat_page.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   // Ensures that native code from flutter can interact to our app before
@@ -11,6 +13,9 @@ void main() async {
 
   // Initialize the authentication service before 1 frame will be rendered
   await AuthService.initService();
+
+  // Initialize firebase service
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // To use State notifiers we have to run app with ChangeNotifierProvider
   runApp(ChangeNotifierProvider(
