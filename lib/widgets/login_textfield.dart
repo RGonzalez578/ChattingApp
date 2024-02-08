@@ -5,7 +5,7 @@ class LoginTextField extends StatelessWidget {
   final FormFieldValidator<String> validator;
   final String labelText;
   final bool isPassword;
-  LoginTextField(
+  const LoginTextField(
       {super.key,
       required this.controller,
       required this.validator,

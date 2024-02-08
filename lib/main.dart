@@ -34,11 +34,13 @@ void main() async {
   // To use State notifiers we have to run app with ChangeNotifierProvider
   runApp(ChangeNotifierProvider(
     create: (BuildContext context) => AuthService(),
-    child: ChatApp(),
+    child: const ChatApp(),
   ));
 }
 
 class ChatApp extends StatelessWidget {
+  const ChatApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,15 +59,15 @@ class ChatApp extends StatelessWidget {
         builder: (context, AsyncSnapshot<bool> snap) {
           if (snap.connectionState == ConnectionState.done) {
             if (snap.hasData && snap.data!) {
-              return ChatPage();
+              return const ChatPage();
             } else {
-              return LoginPage();
+              return const LoginPage();
             }
           }
           return const CircularProgressIndicator();
         },
       ),
-      routes: {'/chat': (context) => ChatPage()},
+      routes: {'/chat': (context) => const ChatPage()},
     );
   }
 }

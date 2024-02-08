@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 // Use 'stl' shortcut to create a class that extends from StateLessWidget
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();

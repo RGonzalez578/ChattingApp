@@ -17,7 +17,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> isLoggedIn() async {
-    String? username = await _prefs.getString('username');
+    String? username = _prefs.getString('username');
     if (username != null) return true;
     return false;
   }

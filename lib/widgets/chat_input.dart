@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class ChatInput extends StatefulWidget {
   final Function(ChatMessageEntity) onSubmit;
-  ChatInput({
+  const ChatInput({
     super.key,
     required this.onSubmit,
   });
@@ -22,7 +22,7 @@ class _ChatInputState extends State<ChatInput> {
   final msgInputController = TextEditingController();
 
   void onSendMessage() async {
-    String? usernameFromCache = await context.read<AuthService>().getUsername();
+    String? usernameFromCache = context.read<AuthService>().getUsername();
     ChatMessageEntity newMessage = ChatMessageEntity(
         text: msgInputController.text,
         id: '',
