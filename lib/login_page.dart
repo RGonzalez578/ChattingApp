@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:chat_app/signup_page.dart';
 
 // Use 'stl' shortcut to create a class that extends from StateLessWidget
 class LoginPage extends StatefulWidget {
@@ -32,12 +33,6 @@ class _LoginPageState extends State<LoginPage> {
           arguments: userNameController.text);
     } else {
       print('Login failed');
-    }
-  }
-
-  Future<void> _goToURL() async {
-    if (!await launchUrl(_footerUrl)) {
-      throw Exception('Error while launching URL');
     }
   }
 
@@ -74,17 +69,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildFooter() {
     return GestureDetector(
-      onTap: _goToURL,
-      child: Column(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const SignUpPage()),
+        );
+      },
+      child: const Column(
         children: [
-          const Text(
-            'Find us on',
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
-          ),
           Text(
-            _footerUrl.toString(),
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
-          ),
+            'Sign up',
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+          )
         ],
       ),
     );
@@ -111,7 +107,9 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     }
                   }),
+
               verticalSpacing(standardSpace),
+
               LoginTextField(
                 controller: passwordController,
                 validator: (value) {
@@ -129,7 +127,9 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
+
         verticalSpacing(standardSpace),
+
         ElevatedButton(
             onPressed: () async {
               await loginUser(context);
