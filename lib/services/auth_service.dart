@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:chat_app/services/crash_reporter_service.dart';
 
 class AuthService extends ChangeNotifier {
   static initService() async {
@@ -8,9 +10,25 @@ class AuthService extends ChangeNotifier {
 
   static late final SharedPreferences _prefs;
 
-  Future<void> login(String username) async {
+  static final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  static final crashReporter = CrashReporter();
+
+  Future<bool> registerUser (String email, String pass) async {
     try {
-      _prefs.setString("username", username);
+      crashReporter.reportProblem("TEST CRASH");
+      UserCredential credential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: pass);
+      print(credential);
+    } catch (e) {
+      crashReporter.reportProblem("TEST CRASH");
+    }
+    return true;
+  }
+
+  Future<void> login(String username, String pass) async {
+    try {
+
+      // _prefs.setString("username", username);
     } catch (e) {
       print(e);
     }
