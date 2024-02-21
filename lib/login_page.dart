@@ -5,7 +5,6 @@ import 'package:chat_app/utils/spaces.dart';
 import 'package:chat_app/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:chat_app/signup_page.dart';
 
@@ -20,17 +19,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final userNameController = TextEditingController();
+  final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
 
-  final Uri _footerUrl = Uri.parse('https://pub.dev/');
-
   Future<void> loginUser(BuildContext context) async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      await context.read<AuthService>().login(userNameController.text, passwordController.text);
+      await context.read<AuthService>().loginEmailPass(emailController.text, passwordController.text);
       Navigator.pushReplacementNamed(context, '/chat',
-          arguments: userNameController.text);
+          arguments: emailController.text);
     } else {
       print('Login failed');
     }
@@ -97,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               LoginTextField(
                   labelText: 'User Name',
-                  controller: userNameController,
+                  controller: emailController,
                   validator: (value) {
                     if (value != null && value.isNotEmpty && value.length < 5) {
                       return 'Your username has to have more than 5 characters';
