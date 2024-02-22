@@ -15,7 +15,6 @@ class ErrorMessage extends StatelessWidget {
         child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
-              /*mainAxisAlignment: MainAxisAlignment.spaceBetween,*/
               children: [
                 const Icon(Icons.info_outline, color: Colors.red),
                 horizontalSpacing(10),

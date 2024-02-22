@@ -73,14 +73,16 @@ class _SignUpPageState extends State<SignUpPage> {
                 labelText: 'Password',
                 isPassword: true,
               )
+              // TODO: Add displayname field to the form
             ],
           ),
         ),
         verticalSpacing(standardSpace),
-        if (errorMessage != null)
-          _buildErrorMessage(),
+        if (errorMessage != null) _buildErrorMessage(),
         ElevatedButton(
-            onPressed: signUp,
+            onPressed: () async {
+              await signUp(context);
+            },
             child: const Text(
               'Sign up',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
@@ -119,16 +121,20 @@ class _SignUpPageState extends State<SignUpPage> {
         ));
   }
 
-  signUp() async {
+  Future<void> signUp(BuildContext context) async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      final resultLogin = await AuthService()
-          .loginEmailPass(emailInputController.text, passInputController.text);
-      if (resultLogin['errorCode'] != null) {
+      final resultSignUp = await AuthService()
+          .signUpEmailPass(emailInputController.text, passInputController.text);
+      if (resultSignUp == null) {
         setState(() {
-          errorMessage = resultLogin['errorCode'];
+          errorMessage = null;
         });
+        Navigator.pushReplacementNamed(context, '/chat',
+            arguments: emailInputController.text);
       } else {
-        errorMessage = null;
+        setState(() {
+          errorMessage = resultSignUp;
+        });
       }
     } else {
       print('Invalid');

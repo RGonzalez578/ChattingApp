@@ -13,41 +13,31 @@ class AuthService extends ChangeNotifier {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static final _crashReporter = CrashReporter();
 
-  Future<User?> signUpEmailPass (String email, String pass) async {
+  Future<String?> signUpEmailPass (String email, String pass) async {
     try {
-      _crashReporter.reportProblem("TEST CRASH");
-      UserCredential credential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: pass);
+      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: pass, );
       // TODO: Store user into sharedPrefs
       // _prefs.setString("username", username);
-      return credential.user;
+      return null;
     } on FirebaseAuthException catch (e) {
       // TODO: Specify better the error for sign up with email & password
       _crashReporter.reportProblem("TEST CRASH ${e.code}");
+      return e.code;
     }
-    return null;
   }
 
-  Future<Map<String, dynamic>> loginEmailPass(String email, String pass) async {
-    print(_firebaseAuth.currentUser!.email);
-    var result = Map<String, dynamic>();
+  Future<String?> loginEmailPass(String email, String pass) async {
     try {
-      final credential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: pass);
-      // print(credential.user!.uid);
-      result['user'] = credential.user;
-      result['errorCode'] = null;
-      return result;
+      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: pass);
+      return null;
     } on FirebaseAuthException catch (e) {
       // TODO: Specify better the error for login with email & password
       _crashReporter.reportProblem(e.code);
-      result['user'] = null;
-      result['errorCode'] = e.code;
-      return result;
+      return e.code;
     } catch (e) {
       // TODO: Specify better the error for login with email & password on fatal error
       _crashReporter.reportProblem(e.toString());
-      result['user'] = null;
-      result['errorCode'] = 'fatal_error';
-      return result;
+      return e.toString();
     }
   }
 
@@ -66,7 +56,8 @@ class AuthService extends ChangeNotifier {
   }
 
   String? getUsername() {
-    return _prefs.getString('username') ?? 'DefaultValue';
+    // return _prefs.getString('username') ?? 'DefaultValue';
+    return _firebaseAuth.currentUser?.displayName ?? _firebaseAuth.currentUser?.email;
   }
 
   void updateUsername(String newUsername) {

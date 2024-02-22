@@ -2,6 +2,7 @@ import 'package:chat_app/core/brand_colors.dart';
 import 'package:chat_app/core/constants.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/utils/spaces.dart';
+import 'package:chat_app/widgets/display_error_msg.dart';
 import 'package:chat_app/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,16 +19,25 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
+
+  String? errorMessage;
 
   Future<void> loginUser(BuildContext context) async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      await context.read<AuthService>().loginEmailPass(emailController.text, passwordController.text);
-      Navigator.pushReplacementNamed(context, '/chat',
-          arguments: emailController.text);
+      final resultLogin = await context.read<AuthService>().loginEmailPass(emailController.text, passwordController.text);
+      if (resultLogin == null) {
+        setState(() {
+          errorMessage = null;
+        });
+        Navigator.pushReplacementNamed(context, '/chat',
+            arguments: emailController.text);
+      } else {
+        setState(() {
+          errorMessage = resultLogin;
+        });
+      }
     } else {
       print('Login failed');
     }
@@ -126,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
 
         verticalSpacing(standardSpace),
+        if (errorMessage != null) _buildErrorMessage(),
 
         ElevatedButton(
             onPressed: () async {
@@ -133,6 +144,15 @@ class _LoginPageState extends State<LoginPage> {
             },
             child: const Text('Login',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600))),
+      ],
+    );
+  }
+
+  Widget _buildErrorMessage() {
+    return Column(
+      children: [
+        ErrorMessage(message: errorMessage!),
+        verticalSpacing(standardSpace)
       ],
     );
   }
