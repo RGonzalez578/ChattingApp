@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chat_app/services/crash_reporter_service.dart';
 
 class AuthService extends ChangeNotifier {
-
   static initService() async {
     _prefs = await SharedPreferences.getInstance();
   }
@@ -13,9 +12,16 @@ class AuthService extends ChangeNotifier {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static final _crashReporter = CrashReporter();
 
-  Future<String?> signUpEmailPass (String email, String pass) async {
+  Future<String?> signUpEmailPass(
+      String email, String pass, String displayName) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: pass, );
+      final credential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: pass,
+      );
+      if (credential.user != null) {
+        await credential.user!.updateDisplayName(displayName);
+      }
       // TODO: Store user into sharedPrefs
       // _prefs.setString("username", username);
       return null;
@@ -28,7 +34,8 @@ class AuthService extends ChangeNotifier {
 
   Future<String?> loginEmailPass(String email, String pass) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: pass);
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: pass);
       return null;
     } on FirebaseAuthException catch (e) {
       // TODO: Specify better the error for login with email & password
@@ -57,7 +64,8 @@ class AuthService extends ChangeNotifier {
 
   String? getUsername() {
     // return _prefs.getString('username') ?? 'DefaultValue';
-    return _firebaseAuth.currentUser?.displayName ?? _firebaseAuth.currentUser?.email;
+    return _firebaseAuth.currentUser?.displayName ??
+        _firebaseAuth.currentUser?.email;
   }
 
   void updateUsername(String newUsername) {

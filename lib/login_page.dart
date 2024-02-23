@@ -26,7 +26,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> loginUser(BuildContext context) async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      final resultLogin = await context.read<AuthService>().loginEmailPass(emailController.text, passwordController.text);
+      final resultLogin = await context
+          .read<AuthService>()
+          .loginEmailPass(emailController.text, passwordController.text);
       if (resultLogin == null) {
         setState(() {
           errorMessage = null;
@@ -114,9 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     }
                   }),
-
               verticalSpacing(standardSpace),
-
               LoginTextField(
                 controller: passwordController,
                 validator: (value) {
@@ -134,16 +134,17 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-
         verticalSpacing(standardSpace),
         if (errorMessage != null) _buildErrorMessage(),
-
         ElevatedButton(
-            onPressed: () async {
-              await loginUser(context);
-            },
-            child: const Text('Login',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600))),
+          onPressed: () async {
+            await loginUser(context);
+          },
+          child: const Text(
+            'Login',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          ),
+        ),
       ],
     );
   }

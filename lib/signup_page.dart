@@ -19,6 +19,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final emailInputController = TextEditingController();
   final passInputController = TextEditingController();
+  final displayNameInputController = TextEditingController();
 
   String? errorMessage;
 
@@ -55,13 +56,25 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             children: [
               LoginTextField(
-                  controller: emailInputController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'No puede estar vacío';
-                    }
-                  },
-                  labelText: 'Email'),
+                controller: displayNameInputController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'No puede estar vacío';
+                  }
+                },
+                labelText: 'Display name',
+                isPassword: false,
+              ),
+              verticalSpacing(standardSpace),
+              LoginTextField(
+                controller: emailInputController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'No puede estar vacío';
+                  }
+                },
+                labelText: 'Email',
+              ),
               verticalSpacing(standardSpace),
               LoginTextField(
                 controller: passInputController,
@@ -80,13 +93,14 @@ class _SignUpPageState extends State<SignUpPage> {
         verticalSpacing(standardSpace),
         if (errorMessage != null) _buildErrorMessage(),
         ElevatedButton(
-            onPressed: () async {
-              await signUp(context);
-            },
-            child: const Text(
-              'Sign up',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ))
+          onPressed: () async {
+            await signUp(context);
+          },
+          child: const Text(
+            'Sign up',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          ),
+        )
       ],
     );
   }
@@ -123,8 +137,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> signUp(BuildContext context) async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      final resultSignUp = await AuthService()
-          .signUpEmailPass(emailInputController.text, passInputController.text);
+      final resultSignUp = await AuthService().signUpEmailPass(
+          emailInputController.text,
+          passInputController.text,
+          displayNameInputController.text);
       if (resultSignUp == null) {
         setState(() {
           errorMessage = null;
