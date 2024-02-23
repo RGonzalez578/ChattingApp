@@ -2,15 +2,16 @@ import 'package:chat_app/core/brand_colors.dart';
 import 'package:chat_app/core/constants.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/utils/spaces.dart';
+import 'package:chat_app/widgets/display_error_msg.dart';
 import 'package:chat_app/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:chat_app/signup_page.dart';
 
 // Use 'stl' shortcut to create a class that extends from StateLessWidget
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -18,26 +19,29 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
-  final userNameController = TextEditingController();
-
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  final Uri _footerUrl = Uri.parse('https://pub.dev/');
+  String? errorMessage;
 
   Future<void> loginUser(BuildContext context) async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      await context.read<AuthService>().login(userNameController.text);
-      Navigator.pushReplacementNamed(context, '/chat',
-          arguments: userNameController.text);
+      final resultLogin = await context
+          .read<AuthService>()
+          .loginEmailPass(emailController.text, passwordController.text);
+      if (resultLogin == null) {
+        setState(() {
+          errorMessage = null;
+        });
+        Navigator.pushReplacementNamed(context, '/chat',
+            arguments: emailController.text);
+      } else {
+        setState(() {
+          errorMessage = resultLogin;
+        });
+      }
     } else {
       print('Login failed');
-    }
-  }
-
-  Future<void> _goToURL() async {
-    if (!await launchUrl(_footerUrl)) {
-      throw Exception('Error while launching URL');
     }
   }
 
@@ -74,17 +78,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildFooter() {
     return GestureDetector(
-      onTap: _goToURL,
-      child: Column(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const SignUpPage()),
+        );
+      },
+      child: const Column(
         children: [
-          const Text(
-            'Find us on',
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
-          ),
           Text(
-            _footerUrl.toString(),
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
-          ),
+            'Sign up',
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+          )
         ],
       ),
     );
@@ -101,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               LoginTextField(
                   labelText: 'User Name',
-                  controller: userNameController,
+                  controller: emailController,
                   validator: (value) {
                     if (value != null && value.isNotEmpty && value.length < 5) {
                       return 'Your username has to have more than 5 characters';
@@ -130,12 +135,25 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         verticalSpacing(standardSpace),
+        if (errorMessage != null) _buildErrorMessage(),
         ElevatedButton(
-            onPressed: () async {
-              await loginUser(context);
-            },
-            child: const Text('Login',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600))),
+          onPressed: () async {
+            await loginUser(context);
+          },
+          child: const Text(
+            'Login',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildErrorMessage() {
+    return Column(
+      children: [
+        ErrorMessage(message: errorMessage!),
+        verticalSpacing(standardSpace)
       ],
     );
   }
