@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,7 +36,7 @@ class AuthService extends ChangeNotifier {
 
   Future<String?> loginEmailPass(String email, String pass) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      final credential = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: pass);
       return null;
     } on FirebaseAuthException catch (e) {
@@ -49,8 +51,8 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> isLoggedIn() async {
-    String? username = _prefs.getString('username');
-    if (username != null) return true;
+    // String? username = _prefs.getString('username');
+    if (_firebaseAuth.currentUser != null) return true;
     return false;
   }
 
