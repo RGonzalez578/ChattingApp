@@ -1,18 +1,25 @@
-import 'dart:convert';
-
+import 'package:chat_app/services/injection_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chat_app/services/crash_reporter_service.dart';
 
-class AuthService extends ChangeNotifier {
-  static initService() async {
-    _prefs = await SharedPreferences.getInstance();
-  }
+import 'navigation_service.dart';
 
+class AuthService extends ChangeNotifier {
   static late final SharedPreferences _prefs;
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static final _crashReporter = CrashReporter();
+  final _navigationService = getIt<NavigationService>();
+
+  static initService() async {
+    // _prefs = await SharedPreferences.getInstance();
+    // _firebaseAuth.authStateChanges().listen((user) {
+    //   if (user == null) {
+    //     logout();
+    //   }
+    // });
+  }
 
   Future<String?> signUpEmailPass(
       String email, String pass, String displayName) async {
@@ -36,7 +43,7 @@ class AuthService extends ChangeNotifier {
 
   Future<String?> loginEmailPass(String email, String pass) async {
     try {
-      final credential = await _firebaseAuth.signInWithEmailAndPassword(
+      await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: pass);
       return null;
     } on FirebaseAuthException catch (e) {
@@ -56,11 +63,13 @@ class AuthService extends ChangeNotifier {
     return false;
   }
 
-  logout() {
+  Future<void> logout() async {
     try {
-      _prefs.clear();
+      // _prefs.clear();
+      await _firebaseAuth.signOut();
+      _navigationService.pushReplacementNamed('/');
     } catch (e) {
-      print(e);
+      _crashReporter.reportProblem(e.toString());
     }
   }
 

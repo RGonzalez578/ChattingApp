@@ -63,16 +63,9 @@ class _ChatPageState extends State<ChatPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              context.read<AuthService>().updateUsername('gg');
-            },
-            icon: const Icon(Icons.edit),
-            color: Colors.black54,
-          ),
-          IconButton(
             onPressed: () async {
               await context.read<AuthService>().logout();
-              Navigator.pushReplacementNamed(context, '/');
+              // Navigator.pushReplacementNamed(context, '/');
             },
             icon: const Icon(Icons.logout),
             color: Colors.black54,
