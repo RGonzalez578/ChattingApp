@@ -19,11 +19,11 @@ void main() async {
   // 1 frame will be rendered
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize the authentication service before 1 frame will be rendered
-  await AuthService.initService();
-
   // Initialize firebase service
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Initialize the authentication service before 1 frame will be rendered
+  await AuthService.initService();
 
   // Replace Flutter error catching for Crashlytics
   FlutterError.onError = (errorDetails) {

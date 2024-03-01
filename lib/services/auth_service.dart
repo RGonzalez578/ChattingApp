@@ -10,15 +10,15 @@ class AuthService extends ChangeNotifier {
   static late final SharedPreferences _prefs;
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static final _crashReporter = CrashReporter();
-  final _navigationService = getIt<NavigationService>();
+  // final _navigationService = getIt<NavigationService>();
 
   static initService() async {
-    // _prefs = await SharedPreferences.getInstance();
-    // _firebaseAuth.authStateChanges().listen((user) {
-    //   if (user == null) {
-    //     logout();
-    //   }
-    // });
+    final navigationService = getIt<NavigationService>();
+    _firebaseAuth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        navigationService.pushReplacementNamed('/');
+      }
+    });
   }
 
   Future<String?> signUpEmailPass(
@@ -67,7 +67,6 @@ class AuthService extends ChangeNotifier {
     try {
       // _prefs.clear();
       await _firebaseAuth.signOut();
-      _navigationService.pushReplacementNamed('/');
     } catch (e) {
       _crashReporter.reportProblem(e.toString());
     }
