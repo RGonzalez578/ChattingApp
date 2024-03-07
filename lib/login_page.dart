@@ -1,6 +1,8 @@
 import 'package:chat_app/core/brand_colors.dart';
 import 'package:chat_app/core/constants.dart';
 import 'package:chat_app/services/auth_service.dart';
+import 'package:chat_app/services/injection_service.dart';
+import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/utils/spaces.dart';
 import 'package:chat_app/widgets/display_error_msg.dart';
 import 'package:chat_app/widgets/login_textfield.dart';
@@ -21,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final _navigationService = getIt<NavigationService>();
 
   String? errorMessage;
 
@@ -37,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
             arguments: emailController.text);
       } else {
         setState(() {
-          errorMessage = resultLogin;
+          errorMessage = context.read<AuthService>().validateErrors(resultLogin);
         });
       }
     } else {

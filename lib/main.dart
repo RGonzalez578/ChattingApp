@@ -53,6 +53,7 @@ class ChatApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'New Telegram',
       theme: ThemeData(
+        useMaterial3: true,
         canvasColor: Colors.transparent,
         primaryColor: Colors.indigo,
         primarySwatch: Colors.indigo,
