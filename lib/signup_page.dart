@@ -1,4 +1,5 @@
 import 'package:chat_app/core/constants.dart';
+import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/utils/spaces.dart';
 import 'package:chat_app/widgets/display_error_msg.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ import 'package:chat_app/widgets/login_textfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:chat_app/core/brand_colors.dart';
 import 'package:chat_app/services/auth_service.dart';
+
+import 'services/injection_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -20,6 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final emailInputController = TextEditingController();
   final passInputController = TextEditingController();
   final displayNameInputController = TextEditingController();
+  final _navigationService = getIt<NavigationService>();
 
   String? errorMessage;
 
@@ -28,7 +32,10 @@ class _SignUpPageState extends State<SignUpPage> {
       const Text(
         'Sign up!',
         style: TextStyle(
-            fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black54),
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
       ),
       const Text('Welcome',
           style: TextStyle(
@@ -86,7 +93,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 labelText: 'Password',
                 isPassword: true,
               )
-              // TODO: Add displayname field to the form
             ],
           ),
         ),
@@ -118,7 +124,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -145,11 +151,10 @@ class _SignUpPageState extends State<SignUpPage> {
         setState(() {
           errorMessage = null;
         });
-        Navigator.pushReplacementNamed(context, '/chat',
-            arguments: emailInputController.text);
+        _navigationService.pushReplacementNamed('/chat');
       } else {
         setState(() {
-          errorMessage = resultSignUp;
+          errorMessage = AuthService().validateErrors(resultSignUp);
         });
       }
     } else {
