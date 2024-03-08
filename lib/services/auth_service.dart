@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chat_app/services/crash_reporter_service.dart';
-import 'package:chat_app/core/error_types.dart';
+import 'package:chat_app/core/constants/error_types.dart';
 
 import 'navigation_service.dart';
 

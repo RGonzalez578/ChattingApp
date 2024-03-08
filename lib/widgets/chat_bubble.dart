@@ -1,4 +1,4 @@
-import 'package:chat_app/core/constants.dart';
+import 'package:chat_app/core/constants/constants.dart';
 import 'package:chat_app/models/chat_message_entity.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/utils/spaces.dart';

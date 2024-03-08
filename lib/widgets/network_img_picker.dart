@@ -1,4 +1,4 @@
-import 'package:chat_app/core/constants.dart';
+import 'package:chat_app/core/constants/constants.dart';
 import 'package:chat_app/repository/image_repository.dart';
 import 'package:flutter/material.dart';
 import '../models/apiImage_entity.dart';

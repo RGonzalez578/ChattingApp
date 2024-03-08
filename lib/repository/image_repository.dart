@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import '../core/constants.dart';
+import '../core/constants/constants.dart';
 import '../models/apiImage_entity.dart';
 import 'package:http/http.dart' as http;
 import '../models/response_api_image_entity.dart';

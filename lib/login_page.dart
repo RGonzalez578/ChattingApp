@@ -1,5 +1,5 @@
-import 'package:chat_app/core/brand_colors.dart';
-import 'package:chat_app/core/constants.dart';
+import 'package:chat_app/core/constants/brand_colors.dart';
+import 'package:chat_app/core/constants/constants.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/services/injection_service.dart';
 import 'package:chat_app/services/navigation_service.dart';

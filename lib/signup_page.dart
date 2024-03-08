@@ -1,4 +1,4 @@
-import 'package:chat_app/core/constants.dart';
+import 'package:chat_app/core/constants/constants.dart';
 import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/utils/spaces.dart';
 import 'package:chat_app/widgets/display_error_msg.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:chat_app/widgets/login_textfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:chat_app/core/brand_colors.dart';
+import 'package:chat_app/core/constants/brand_colors.dart';
 import 'package:chat_app/services/auth_service.dart';
 
 import 'services/injection_service.dart';

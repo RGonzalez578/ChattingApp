@@ -57,7 +57,6 @@ class _ChatPageState extends State<ChatPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          // TODO: Verify what to do if username has 'DefaultValue' String
           username!,
           style: const TextStyle(color: Colors.black54),
         ),
@@ -65,7 +64,6 @@ class _ChatPageState extends State<ChatPage> {
           IconButton(
             onPressed: () async {
               await context.read<AuthService>().logout();
-              // Navigator.pushReplacementNamed(context, '/');
             },
             icon: const Icon(Icons.logout),
             color: Colors.black54,
